@@ -5,6 +5,7 @@
 test.prg
 
 hbct.hbc
+hbmisc.hbc
 
 .\debug\debugger.prg
 .\scalar\*.prg

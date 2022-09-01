@@ -1,34 +1,54 @@
 /* CLASS: Scalar Logical
-          clase que define los m√©todos para el tipo de dato l√≥gico
+          clase que define los m?Ætodos para el tipo de dato l??gico
 */
 #INCLUDE 'hbclass.ch'
 
 CREATE CLASS Logical INHERIT HBScalar FUNCTION HBLogical
 
-   METHOD Str()
-   METHOD StrSql()
-   METHOD Value()
-   METHOD NotEmpty()
-   METHOD Empty()
+    METHOD Empty()
+    METHOD NotEmpty()
+    METHOD Str()
+    METHOD StrSql()
+    METHOD ValType()
+    METHOD Value()
 
 ENDCLASS
 
 // Group: EXPORTED METHODS
 
+
+/* METHOD: Empty()
+    Siempre devuelve .F. ya que est· para compatibilizar con Nil:Empty()
+
+    Devuelve:
+        Logical
+*/
+METHOD Empty() CLASS Logical
+Return ( .F. )
+
+
+/* METHOD: NotEmpty()
+    Siempre devuelve .T. ya que est· para compatibilizar con Nil:NotEmpty()
+
+    Devuelve:
+        Logical
+*/
+METHOD NotEmpty() CLASS Logical
+Return ( .T. )
+
+
 /* METHOD: Str( cTrue, cFalse)
-    Devuelve el literal cTrue o cFalse dependiente del valor l√≥gico del dato, si no se le pasan utiliza .T. y .F.
+    Devuelve el literal cTrue o cFalse dependiente del valor lÛgico del dato, si no se le pasan utiliza .T. y .F.
 
-    ejemplo de uso
-    --- code
-    lValor:Str( 'si', 'no' )
-    ---          
+    Par·metros:
+        cTrue - String a devolver en el caso de true
+        cFalse - String a devolver en el caso de false
 
-Par√°metros:
-    cTrue - String a devolver en el caso de true
-    cFalse - String a devolver en el caso de false
+    Devuelve:
+        Character
 
-Devuelve:
-    String
+    Ejemplo:
+        lValor:Str( 'si', 'no' )
 */
 METHOD Str( cTrue, cFalse) CLASS Logical
 
@@ -37,41 +57,34 @@ METHOD Str( cTrue, cFalse) CLASS Logical
     
 RETURN iif( Self, cTrue, cFalse )
 
+
 /* METHOD: StrSql()
 
-    Devuelve 1 si el valor del dato es .T. y string vac√≠o si es .F. Se utiliza para compatibilizar con el resto de m√©todos StrSql de los scalar
+    Devuelve 1 si el valor del dato es .T. y string vacÌo si es .F. Se utiliza para compatibilizar con el resto de mÈtodos StrSql de los scalar
 
     Devuelve:
-
-    String
+        Character
 
 */
 METHOD StrSql() CLASS Logical
 Return ::Str( '1','')
 
+
+/* METHOD: ValType()
+    Devuelve el tipo del dato
+    
+    Devuelve:
+        Character
+*/
+METHOD ValType() CLASS Logical
+Return ( 'L' )
+
+
 /* METHOD: Value()
-    Devuelve el valor del dato, es √∫til para combinarlo con los valores NIL
+    Devuelve el valor del dato, es ˙til para combinarlo con los valores NIL
 
     Devuelve:
-        L√≥gico
+        Logical
 */
 METHOD Value() CLASS Logical
 Return ( Self )
-
-/* METHOD: NotEmpty()
-    Siempre devuelve .T. ya que est√° para compatibilizar con Nil:NotEmpty()
-
-    Devuelve:
-        L√≥gico
-*/
-METHOD NotEmpty() CLASS Logical
-Return ( .T. )
-
-/* METHOD: Empty()
-    Siempre devuelve .F. ya que est√° para compatibilizar con Nil:Empty()
-
-    Devuelve:
-        L√≥gico
-*/
-METHOD Empty() CLASS Logical
-Return ( .F. )

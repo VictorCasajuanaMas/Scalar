@@ -64,18 +64,18 @@ RETURN  DtoT(xFecha)
    * @param   dFecha     Fecha a convertir
    * @param   cFecha     Plantilla con el formato de la fecha (default "dd de mmmm de aaaa")
    *              Elementos para plantilla
-   *                0d -- d√≠a anteponiendo 0 en los d√≠as de un d√≠gito
-   *                dd -- d√≠a
-   *                0m -- n√∫mero del mes anteponiendo 0 en los meses de un d√≠gito
-   *                mm -- n√∫mero del mes
+   *                0d -- d?°a anteponiendo 0 en los d?°as de un d?°gito
+   *                dd -- d?°a
+   *                0m -- n??mero del mes anteponiendo 0 en los meses de un d?°gito
+   *                mm -- n??mero del mes
    *               mmm -- las primeras tres letras del mes en minusculas
    *               Mmm -- las primeras tres letras del mes en comenzando con mayuscula
    *               MMM -- las primeras tres letras del mes en mayusculas
    *              mmmm -- el nombre del mes en minusculas
    *              Mmmm -- el nombre del mes comenzando con mayuscula
    *              MMMM -- el nombre del mes en mayusculas
-   *                aa -- a√±o con dos d√≠gitos
-   *              aaaa -- a√±o con cuatro d√≠gitos
+   *                aa -- a??o con dos d?°gitos
+   *              aaaa -- a??o con cuatro d?°gitos
  
    * @return  Una cadena con el formato deseado por defecto "dd de mmmm de aaaa"
 */
@@ -117,15 +117,15 @@ FUNCTION dToT(xFecha,cFecha)
    cFecha:=strTran(cFecha,"AA",cVar)
  
 RETURN cFecha
- 
+
 **/
    * FUNCION que Devuelve un texto con un rango de fechas
  
-   * @author   Version 1.0 Mayo 5/99  Daniel Garc√≠a
+   * @author   Version 1.0 Mayo 5/99  Daniel Garc?°a
    * @param    xFecIni    Fecha inicial del rango a convertir o un array con la fecha inicial y final
    * @param    xFecFin    Fecha final del rango a convertir
    * @param    cCadenaIni Cadena inicial a devolver si no se pasa de agrega "del "
-   *            Para suprimir se pasa una cadena vac√≠a.
+   *            Para suprimir se pasa una cadena vac?°a.
  
  
    * @return  Una cadena con el texto resultante
@@ -158,14 +158,14 @@ FUNCTION DTOTRANGO(xFecIni, xFecFin, cCadenaIni)
       IF xFecIni = xFecFin       // Si las fecha son iguales
          cCadenaIni:=cCadenaIni + dToT(xFecFin, "dd de mmmm de aaaa")
       Else
-         If Year(xFecIni) = Year(xFecFin)                     // Las fechas son del mismo a√±o
+         If Year(xFecIni) = Year(xFecFin)                     // Las fechas son del mismo a??o
             If Month(xFecIni) = Month(xFecFin)                // Las fechas son del mismo mes
-               cCadenaIni:=cCadenaIni + dToT(xFecIni, "dd")         // Tomar el d√≠a
+               cCadenaIni:=cCadenaIni + dToT(xFecIni, "dd")         // Tomar el d?°a
             Else                                              // Si no son del mismo mes
-               cCadenaIni:=cCadenaIni + dToT(xFecIni, "dd de mmmm")  // Tomar d√≠a y mes
+               cCadenaIni:=cCadenaIni + dToT(xFecIni, "dd de mmmm")  // Tomar d?°a y mes
             EndIf
             cCadenaIni:=cCadenaIni + dToT(xFecFin, " al dd de mmmm de aaaa")
-         Else                                                 // Si no son del mismo a√±o
+         Else                                                 // Si no son del mismo a??o
             cCadenaIni:=cCadenaIni + dToT(xFecIni, "dd de mmmm de aaaa") + dToT(xFecFin, " al dd de mes de aaaa")
          EndIf
       EndIf
@@ -174,13 +174,13 @@ FUNCTION DTOTRANGO(xFecIni, xFecFin, cCadenaIni)
 Return cCadenaIni
  
 **/
-   * FUNCION que Devuelve un string con la edad en a√±os, meses y dias
+   * FUNCION que Devuelve un string con la edad en a??os, meses y dias
  
    * @author  Bingen Ugaldebere
    * @param   dFechaIni Fecha de nacimiento o inicial
    * @param   dFechaFin Fecha de referencia final por defecto Date()
  
-   * @return  Una cadena con la edad en a√±os, meses y dias
+   * @return  Una cadena con la edad en a??os, meses y dias
 */
  
  Function Calc_Edad( dFechaIni, dFechaFin )
@@ -195,15 +195,15 @@ Return cCadenaIni
       cMeses := SUBSTR( dsmsas, 3, 2 )
       cDias  := SUBSTR( dsmsas, 1, 2 )
  
-      cResp := alltrim( cAnos )  + IIF( VAL(cAnos)==1,  " A√±o, ", " A√±os, " )+;
+      cResp := alltrim( cAnos )  + IIF( VAL(cAnos)==1,  " A??o, ", " A??os, " )+;
                cMeses + IIF( VAL(cMeses)==1, " Mes y ", " Meses y " ) +;
-               cDias  + IIF( VAL(cDias)==1,  " D√≠a", " D√≠as" )
+               cDias  + IIF( VAL(cDias)==1,  " D?°a", " D?°as" )
    Endif
  
  RETURN  cResp
  
 **/
-   * FUNCION que Devuelve la diferencia de a√±os meses y dias de Las fechas pasadas como par√°metros, en un string de 6 posiciones con formato ddmmaa
+   * FUNCION que Devuelve la diferencia de a??os meses y dias de Las fechas pasadas como par?Ìmetros, en un string de 6 posiciones con formato ddmmaa
    *        En el prg se deben  sustraer cada uno de ellos....
  
    * @author  Bingen Ugaldebere
@@ -242,12 +242,12 @@ LOCAL nDifDia, nDifMes, nDifAno, nCantDiaMesAnt, nAno, nMes
 RETURN( STR( nDifDia, 2 ) + STR( nDifMes, 2 ) + STR( nDifAno, 3 ) )
  
 **/
-   * FUNCION que Devuelve el nombre de un d√≠a de una fecha
+   * FUNCION que Devuelve el nombre de un d?°a de una fecha
  
    * @author  Bingen Ugaldebere
    * @param   dDate Fecha de referencia
  
-   * @return  Nombre del d√≠a en castellano
+   * @return  Nombre del d?°a en castellano
 */
  
 function DiaTexto(dDate)
@@ -255,20 +255,20 @@ local nDia
    Default dDate to Date()
    nDia := Dow(dDate)-1
    if nDia == 0; nDia := 7 ; endif
-return {"Lunes","Martes","Miercoles","Jueves","Viernes","S√°bado","Domingo"}[nDia]
+return {"Lunes","Martes","Miercoles","Jueves","Viernes","S?Ìbado","Domingo"}[nDia]
  
 **/
-   * FUNCION que Averigua el nombre del d√≠a de la fecha o n√∫mero de d√≠a enviado.
+   * FUNCION que Averigua el nombre del d?°a de la fecha o n??mero de d?°a enviado.
  
-   * @author  Sanrom's Software de M√©xico 14/08/97
-   * @param   xFecha  Par√°metro que indica la fecha o N√∫mero del d√≠a a convertir. por defecto Date()
-   * N O T A S  : El par√°metro podr√° ser una fecha v√°lida o un n√∫mero comprendido entre 1 y 7.
+   * @author  Sanrom's Software de M?Æxico 14/08/97
+   * @param   xFecha  Par?Ìmetro que indica la fecha o N??mero del d?°a a convertir. por defecto Date()
+   * N O T A S  : El par?Ìmetro podr?Ì ser una fecha v?Ìlida o un n??mero comprendido entre 1 y 7.
    
-   * @return  cDia    Una cadena con el nombre del d√≠a que corresponde a la fecha o n√∫mero enviado.
+   * @return  cDia    Una cadena con el nombre del d?°a que corresponde a la fecha o n??mero enviado.
 */
  
 FUNCTION Dia( xFecha, nLong )
-   LOCAL nDia                 // N√∫mero del d√≠a a averiguar su nombre.
+   LOCAL nDia                 // N??mero del d?°a a averiguar su nombre.
    LOCAL cDia := ""
  
    DEFAULT xFecha TO DATE()   // Por default tomar  la fecha del sistema.
@@ -280,10 +280,10 @@ FUNCTION Dia( xFecha, nLong )
       CASE 1;   cDia := "Domingo";     EXIT
       CASE 2;   cDia := "Lunes";       EXIT
       CASE 3;   cDia := "Martes";      EXIT
-      CASE 4;   cDia := "Mi√©rcoles";   EXIT
+      CASE 4;   cDia := "Mi?Ærcoles";   EXIT
       CASE 5;   cDia := "Jueves";      EXIT
       CASE 6;   cDia := "Viernes";     EXIT
-      CASE 7;   cDia := "S√°bado";      EXIT
+      CASE 7;   cDia := "S?Ìbado";      EXIT
    END
  
    IF nLong > 0
@@ -292,27 +292,27 @@ FUNCTION Dia( xFecha, nLong )
 RETURN(cDia)
  
 **/
-   * FUNCION que Suma D√≠as a una fecha tomando solo d√≠as H√°biles util paar plazos administrativos
+   * FUNCION que Suma D?°as a una fecha tomando solo d?°as H?Ìbiles util paar plazos administrativos
  
-   * @author  Sanrom's Software de M√©xico 14/08/97
-   * @param   <fFecha>  - Par√°metro que indica la fecha desde la cu√°l se va a Partir.
-   * @param   <<nDias>   - N√∫mero de d√≠as que se le van a sumar, si no se manda, se suma 0
+   * @author  Sanrom's Software de M?Æxico 14/08/97
+   * @param   <fFecha>  - Par?Ìmetro que indica la fecha desde la cu?Ìl se va a Partir.
+   * @param   <<nDias>   - N??mero de d?°as que se le van a sumar, si no se manda, se suma 0
    * @param   <nDato>   - Dato que se desea 1 = Fecha, 2 = Dias a Sumar
-   * @param   <fFecha2> - Indica una fecha hasta la cual se quiere llegar para regresar los d√≠as h√°biles entre esas fechas
-   * N O T A S  : Si no se manda la fecha o los d√≠as regresa la fecha del sistema o el siguiente dia habil.
+   * @param   <fFecha2> - Indica una fecha hasta la cual se quiere llegar para regresar los d?°as h?Ìbiles entre esas fechas
+   * N O T A S  : Si no se manda la fecha o los d?°as regresa la fecha del sistema o el siguiente dia habil.
    
-   * @return  fFechaFIn   Una fecha con los d√≠as sumado, tomando solo d√≠as h√°biles.
+   * @return  fFechaFIn   Una fecha con los d?°as sumado, tomando solo d?°as h?Ìbiles.
 */
  
 FUNCTION DiaHabil( fFecha, nDias, nDato, fFecha2)
    LOCAL cAno
-   LOCAL nHabil                    // Contador de D√≠as H√°biles, hasta llegar a nDias enviados.
-   LOCAL fFechaFin                 // Fecha con los d√≠as ya sumados para ser h√°bil
-   LOCAL nNoHabil := 0             // D√≠as que no son h√°biles para incrementar a nDias
+   LOCAL nHabil                    // Contador de D?°as H?Ìbiles, hasta llegar a nDias enviados.
+   LOCAL fFechaFin                 // Fecha con los d?°as ya sumados para ser h?Ìbil
+   LOCAL nNoHabil := 0             // D?°as que no son h?Ìbiles para incrementar a nDias
  
    DEFAULT fFecha TO DATE()      // Por default tomar  la fecha del sistema.
-   DEFAULT nDias TO 0           // Por default no incrementa d√≠as
-   DEFAULT nDato TO 1           // Por default regresa la fecha h√°bil
+   DEFAULT nDias TO 0           // Por default no incrementa d?°as
+   DEFAULT nDato TO 1           // Por default regresa la fecha h?Ìbil
  
    IF fFecha2 <> NIL .AND. fFecha < fFecha2
       nDias := fFecha2 - fFecha
@@ -322,14 +322,14 @@ FUNCTION DiaHabil( fFecha, nDias, nDato, fFecha2)
        fFechaFin := fFecha + (nNoHabil + nHabil)
        cAno := PADL(YEAR(fFechaFin), 4, "0")
  
-       ** Si la fecha es domingo, sabado o un d√≠a festivo, incrementa los dias a sumar a la fecha
+       ** Si la fecha es domingo, sabado o un d?°a festivo, incrementa los dias a sumar a la fecha
        IF DOW(fFechaFin) == 1 .OR. DOW(fFechaFin) == 7 .OR. fFechaFin == CTOD("01/01/" + cAno) .OR.;
           fFechaFin == CTOD("05/02/" + cAno) .OR. fFechaFin == CTOD("21/03/" + cAno) .OR. fFechaFin == CTOD("01/05/" + cAno) .OR.;
           fFechaFin == CTOD("16/09/" + cAno) .OR. fFechaFin == CTOD("02/11/" + cAno) .OR. fFechaFin == CTOD("20/11/" + cAno) .OR.;
           fFechaFin == CTOD("12/12/" + cAno) .OR. fFechaFin == CTOD("25/12/" + cAno)
  
-          ++nNoHabil   // Incrementa los d√≠as que no son h√°biles para sumarlos a los dias solicitados
-          --nHabil     // Decrementa el contador de los d√≠as, para dar otra vuellta y ver si cae en d√≠a H√°bil
+          ++nNoHabil   // Incrementa los d?°as que no son h?Ìbiles para sumarlos a los dias solicitados
+          --nHabil     // Decrementa el contador de los d?°as, para dar otra vuellta y ver si cae en d?°a H?Ìbil
        ENDIF
  
        IF fFecha2 <> NIL .AND. fFechaFin >= fFecha2
@@ -338,31 +338,31 @@ FUNCTION DiaHabil( fFecha, nDias, nDato, fFecha2)
    NEXT
  
    DO CASE
-      CASE nDato == 1                         // Regresa la Fecha en D√≠as H√°biles
+      CASE nDato == 1                         // Regresa la Fecha en D?°as H?Ìbiles
            fFechaFin := fFecha + (nNoHabil + nDias)
  
       CASE nDato == 2
-           fFechaFin := nNoHabil + nDias      // Regresa los d√≠as reales que se necesitan suma para ser h√°bil
+           fFechaFin := nNoHabil + nDias      // Regresa los d?°as reales que se necesitan suma para ser h?Ìbil
  
-      CASE nDato == 3                         // Regresa los d√≠as que nos son h√°biles
+      CASE nDato == 3                         // Regresa los d?°as que nos son h?Ìbiles
            fFechaFin := nNoHabil
  
-      CASE nDato == 4                         // Regresa los d√≠as que son h√°biles ente 2 fechas
+      CASE nDato == 4                         // Regresa los d?°as que son h?Ìbiles ente 2 fechas
            fFechaFin := nHabil
    ENDCASE
  
 RETURN(fFechaFin)
  
 **/
-   * FUNCION que nos dice cuantos d√≠as laborables hay entre dos fechas
+   * FUNCION que nos dice cuantos d?°as laborables hay entre dos fechas
  
    * @author  Bingen Ugaldebere
-   * @param   dFechaIni  Par√°metro que indica la fecha de inicio
-   * @param   dFechaFin  Par√°metro que indica la fecha de final
+   * @param   dFechaIni  Par?Ìmetro que indica la fecha de inicio
+   * @param   dFechaFin  Par?Ìmetro que indica la fecha de final
    * @param   aFestivos  [Opcional] Array con las festividades a tener en cuenta entre ambas fechas
-   * @param   lIncluirSabados [Opcional] Si los s√°bados se tienen en cuenta como laborales, por defecto .F.
+   * @param   lIncluirSabados [Opcional] Si los s?Ìbados se tienen en cuenta como laborales, por defecto .F.
  
-   * @return  nDias  Total de d√≠as laborables incluidos  dFechaIni y dFechaFin
+   * @return  nDias  Total de d?°as laborables incluidos  dFechaIni y dFechaFin
 */
  
  
@@ -384,21 +384,21 @@ Return nDias
  
 *
 **/
-   * FUNCION que averigua el nombre del mes de la fecha o n√∫mero de mes enviado.
+   * FUNCION que averigua el nombre del mes de la fecha o n??mero de mes enviado.
  
-   * @author  Sanrom's Software de M√©xico 10/07/96
-   * @param   <xFecha>  - Par√°metro que indica la fecha o N√∫mero del mes a convertir.
-   * @param   <<nDias>  - N√∫mero de d√≠as que se le van a sumar, si no se manda, se suma 0
+   * @author  Sanrom's Software de M?Æxico 10/07/96
+   * @param   <xFecha>  - Par?Ìmetro que indica la fecha o N??mero del mes a convertir.
+   * @param   <<nDias>  - N??mero de d?°as que se le van a sumar, si no se manda, se suma 0
    * @param   <nDato>   - Dato que se desea 1 = Fecha, 2 = Dias a Sumar
-   * @param   <fFecha2> - Indica una fecha hasta la cual se quiere llegar para regresar los d√≠as h√°biles entre esas fechas
-   * N O T A S  : El par√°metro podr√° ser una fecha v√°lida o un n√∫mero comprendido entre 1 y 12.
+   * @param   <fFecha2> - Indica una fecha hasta la cual se quiere llegar para regresar los d?°as h?Ìbiles entre esas fechas
+   * N O T A S  : El par?Ìmetro podr?Ì ser una fecha v?Ìlida o un n??mero comprendido entre 1 y 12.
    
-   * @return  cMes   Una cadena con el nombre del mes que corresponde a la fecha o n√∫mero enviado.
+   * @return  cMes   Una cadena con el nombre del mes que corresponde a la fecha o n??mero enviado.
 */
  
 FUNCTION Mes( xFecha )
    LOCAL cMes
-   LOCAL nMes                 // N√∫mero del mes a averiguar su nombre.
+   LOCAL nMes                 // N??mero del mes a averiguar su nombre.
  
    DEFAULT xFecha TO DATE()   // Por default tomar  la fecha del sistema.
  
@@ -446,20 +446,20 @@ FUNCTION Mes( xFecha )
 RETURN( cMes )
  
 **/
-   * FUNCION que investiga los A√±os, Meses y D√≠as transcurridos desde la fecha <fFechaIni> y la fecha <fFechaFin>
+   * FUNCION que investiga los A??os, Meses y D?°as transcurridos desde la fecha <fFechaIni> y la fecha <fFechaFin>
  
-   * @author  Sanrom's Software de M√©xico 2001
+   * @author  Sanrom's Software de M?Æxico 2001
    * @param   <fFechaIni> -> Primera fecha a tratar.
-   * @param   <fFechaFin> -> Segunda Fecha a tratar. Si se omite este par√°metro, se tomar√° la fecha actual con DATE().
-   * @param   <nRegresa>  -> Indica que tipo de dato se est√° solicitando: 1 = A√±os  2 = A√±os y Meses  3 = A√±os, Meses y D√≠as
-   * @param   <cSeparador> -> Caracter a utilizar como separador entre los A√±os, Meses y D√≠as. Por default ser√°: "."
+   * @param   <fFechaFin> -> Segunda Fecha a tratar. Si se omite este par?Ìmetro, se tomar?Ì la fecha actual con DATE().
+   * @param   <nRegresa>  -> Indica que tipo de dato se est?Ì solicitando: 1 = A??os  2 = A??os y Meses  3 = A??os, Meses y D?°as
+   * @param   <cSeparador> -> Caracter a utilizar como separador entre los A??os, Meses y D?°as. Por default ser?Ì: "."
  
-   * N O T A S  : El par√°metro podr√° ser una fecha v√°lida o un n√∫mero comprendido entre 1 y 12.
+   * N O T A S  : El par?Ìmetro podr?Ì ser una fecha v?Ìlida o un n??mero comprendido entre 1 y 12.
    
-   * @return  <cTiempo> -> Cadena de caracteres con los A√±os, Meses y D√≠as transcurridos desde la fecha <fFechaIni> hasta la fecha <fFechaFin>
-   * E J E M P L O: ? Tiempo( CTOD("17/07/1971"), CTOD("06/07/2001"), 1) ) -> "29"     // A√±os
-   *                ? Tiempo( CTOD("23/03/1972"), CTOD("06/07/2001"), 2) ) -> "29.3"   // A√±os.Meses
-   *                ? Tiempo( CTOD("03/04/1960"), CTOD("06/07/2001"), 3) ) -> "41.3.3" // A√±os.Meses.D√≠as
+   * @return  <cTiempo> -> Cadena de caracteres con los A??os, Meses y D?°as transcurridos desde la fecha <fFechaIni> hasta la fecha <fFechaFin>
+   * E J E M P L O: ? Tiempo( CTOD("17/07/1971"), CTOD("06/07/2001"), 1) ) -> "29"     // A??os
+   *                ? Tiempo( CTOD("23/03/1972"), CTOD("06/07/2001"), 2) ) -> "29.3"   // A??os.Meses
+   *                ? Tiempo( CTOD("03/04/1960"), CTOD("06/07/2001"), 3) ) -> "41.3.3" // A??os.Meses.D?°as
 */
  
 FUNCTION Tiempo(fFechaIni, fFechaFin, nRegresa, cSeparador)
@@ -486,13 +486,13 @@ FUNCTION Tiempo(fFechaIni, fFechaFin, nRegresa, cSeparador)
   nDiaFin := DAY(fFechaFin)
  
  
-  // A√ëOS...
+  // A?ÊOS...
   nAnos := 0
  
   IF nAnoFin > nAnoIni
      nAnos := nAnoFin - nAnoIni
  
-     // Decrese el a√±o en uno si la fecha (mes/d√≠a) no ha ocurrido a√∫n
+     // Decrese el a??o en uno si la fecha (mes/d?°a) no ha ocurrido a??n
      // en la fecha <fFechaFin>
      IF (nMesFin < nMesIni  .OR. ;
         (nMesFin == nMesIni .AND.;
@@ -544,14 +544,14 @@ FUNCTION Tiempo(fFechaIni, fFechaFin, nRegresa, cSeparador)
 RETURN(cTiempo)
  
 **/
-   * FUNCION que averigua el n√∫mero del mes de la fecha o cadena del mes enviado.
+   * FUNCION que averigua el n??mero del mes de la fecha o cadena del mes enviado.
  
-   * @author  Sanrom's Software de M√©xico 17/08/04
-   * @param   <xFecha>  = Par√°metro que indica la fecha o Cadena del mes a convertir.
+   * @author  Sanrom's Software de M?Æxico 17/08/04
+   * @param   <xFecha>  = Par?Ìmetro que indica la fecha o Cadena del mes a convertir.
  
-   * N O T A S  : El par√°metro podr√° ser una fecha v√°lida o una cadena con el nombre del mes.
+   * N O T A S  : El par?Ìmetro podr?Ì ser una fecha v?Ìlida o una cadena con el nombre del mes.
    
-   * @return  nMes  Un n√∫mero con el mes que corresponde a la fecha o cadena enviada.
+   * @return  nMes  Un n??mero con el mes que corresponde a la fecha o cadena enviada.
    * EJEMPLO: ? MesToNum("Febrero") -> 2
    *          ? MesToNum(DATE())    -> 8
    *          ? MesToNum("III")     -> 3
@@ -593,17 +593,17 @@ RETURN(0)
  
  
 **/
-   * FUNCION que suma a√±os, meses y/o d√≠as a una fecha determinada.
+   * FUNCION que suma a??os, meses y/o d?°as a una fecha determinada.
  
-   * @author  Sanrom's Software de M√©xico 2004
+   * @author  Sanrom's Software de M?Æxico 2004
    * @param   <fFecha> = Fecha a tratar.
-   * @param   <nAnos>  = N√∫mero de A√±os que se desea incrementar a la fecha enviada.
-   * @param   <nMeses> = N√∫mero de Meses que se desea incrementar a la fecha enviada.
-   * @param   <nDias>  = N√∫mero de D√≠as que se desea incrementar a la fecha enviada.
+   * @param   <nAnos>  = N??mero de A??os que se desea incrementar a la fecha enviada.
+   * @param   <nMeses> = N??mero de Meses que se desea incrementar a la fecha enviada.
+   * @param   <nDias>  = N??mero de D?°as que se desea incrementar a la fecha enviada.
  
-   * N O T A S  : El par√°metro podr√° ser una fecha v√°lida o una cadena con el nombre del mes.
+   * N O T A S  : El par?Ìmetro podr?Ì ser una fecha v?Ìlida o una cadena con el nombre del mes.
    
-   * @return  <fNewFecha> = Nueva fecha con los A√±os, Meses y D√≠as incrementados.
+   * @return  <fNewFecha> = Nueva fecha con los A??os, Meses y D?°as incrementados.
    * E J E M P L O: ? FechaMas(CToD("17/07/71"), 33,  8, 32) => 18/04/2005
    *                ? FechaMas(CToD("17/07/71"), 32, 16, 40) => 27/12/2004
 */
@@ -631,7 +631,7 @@ FUNCTION FechaMas(fFecha, nAnos, nMeses, nDias)
 RETURN (fFecha)
  
 **/
-   * FUNCION que Devuelve un a√±o inserto en una fecha o numerico o caracter
+   * FUNCION que Devuelve un a??o inserto en una fecha o numerico o caracter
  
    * @author  Bingen Ugaldebere
    * @param   xFecha    Fecha en formato Date o Character o Numeric
@@ -658,7 +658,7 @@ Local nYear
       nYear:=Year(xFecha)
    Otherwise
       nYear:=0
-      LogDebug("Fecha incorrecta en funci√≥n YearOff "+Alltrim(ToString(xFecha)))
+      LogDebug("Fecha incorrecta en funci??n YearOff "+Alltrim(ToString(xFecha)))
    EndCase
  
 Return Val(Right("0000"+Str(nYear),If(lCorta,2,4)))
@@ -669,9 +669,9 @@ Return Val(Right("0000"+Str(nYear),If(lCorta,2,4)))
  
    * @author  Bingen Ugaldebere
    * @param   cFechaHora   cadena DateTime   "20120823 12:01:50"
-   * @param   nAnos        a√±os a sumar
+   * @param   nAnos        a??os a sumar
    * @param   nMeses       meses a sumar
-   * @param   nDias        d√≠as a sumar
+   * @param   nDias        d?°as a sumar
    * @param   nHoras       horas a sumar
    * @param   nMinutos     minutos a sumar
  
@@ -692,20 +692,20 @@ Local dFecha, cHora, cHoraEnt
  
    //Controles
    IF ValType(dFecha) <> "D" .OR. Empty(dFecha)
-      LogDebug("Fecha incorrecta en funci√≥n DateTimeSuma "+cFechaHora)
+      LogDebug("Fecha incorrecta en funci??n DateTimeSuma "+cFechaHora)
       Return cFechaHora
    ENDIF
  
    If !ValHora( cHora )
-      LogDebug("Hora incorrecta en funci√≥n DateTimeSuma "+cFechaHora)
+      LogDebug("Hora incorrecta en funci??n DateTimeSuma "+cFechaHora)
       Return cFechaHora
    ENDIF
  
  
-   //A√±adir a√±os
+   //A??adir a??os
    nAnos := Year(dFecha) + nAnos
  
-   //A√±adir meses
+   //A??adir meses
    nMeses := Month(dFecha)+ nMeses
    DO WHILE nMeses > 12
       nAnos++
@@ -725,17 +725,17 @@ Local dFecha, cHora, cHoraEnt
       nHoras:=nHoras-(Int(nHoras/24)*24)
    Endif
  
-   //A√±adir d√≠as
+   //A??adir d?°as
    dFecha += nDias
  
-   //A√±adir Horas
+   //A??adir Horas
    cHoraEnt:=cHora
    cHora:=AddMinute(cHora,nHoras*60,6)
    If cHora<cHoraEnt
       dFecha++
    Endif
  
-   //A√±adir minutos
+   //A??adir minutos
    cHoraEnt:=cHora
    cHora:=AddMinute(cHora,nMinutos,6)
    If cHora<cHoraEnt
@@ -750,9 +750,9 @@ RETURN DToS(dFecha)+" "+cHora
  
    * @author  Bingen Ugaldebere
    * @param   cFechaHora   cadena DateTime   "20120823 12:01:50"
-   * @param   nAnos        a√±os a sumar
+   * @param   nAnos        a??os a sumar
    * @param   nMeses       meses a sumar
-   * @param   nDias        d√≠as a sumar
+   * @param   nDias        d?°as a sumar
    * @param   nHoras       horas a sumar
    * @param   nMinutos     minutos a sumar
  
@@ -773,17 +773,17 @@ Local dFecha, cHora, cHoraEnt
  
    //Controles
    IF ValType(dFecha) <> "D" .OR. Empty(dFecha)
-      LogDebug("Fecha incorrecta en funci√≥n DateTimeSuma "+cFechaHora)
+      LogDebug("Fecha incorrecta en funci??n DateTimeSuma "+cFechaHora)
       Return cFechaHora
    ENDIF
  
    If !ValHora( cHora )
-      LogDebug("Hora incorrecta en funci√≥n DateTimeSuma "+cFechaHora)
+      LogDebug("Hora incorrecta en funci??n DateTimeSuma "+cFechaHora)
       Return cFechaHora
    ENDIF
  
  
-   //Restar a√±os
+   //Restar a??os
    nAnos := Year(dFecha) - nAnos
  
    //Restar meses
@@ -806,7 +806,7 @@ Local dFecha, cHora, cHoraEnt
       nHoras:=nHoras-(Int(nHoras/24)*24)
    Endif
  
-   //Restar d√≠as
+   //Restar d?°as
    dFecha -= nDias
  
    //Restar Horas
@@ -816,7 +816,7 @@ Local dFecha, cHora, cHoraEnt
       dFecha--
    Endif
  
-   //A√±adir minutos
+   //A??adir minutos
    cHoraEnt:=cHora
    cHora:=AddMinute(cHora,nMinutos*-1,6)
    If cHora>cHoraEnt

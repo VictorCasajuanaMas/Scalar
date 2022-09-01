@@ -1,45 +1,35 @@
 /* CLASS: Scalar Nil
-          clase que define los m√©todos para el tipo de dato Nil
+          clase que define los m?Ætodos para el tipo de dato Nil
 */
 #INCLUDE 'hbclass.ch'
 
 CREATE CLASS NIL INHERIT HBScalar FUNCTION HBNil
-
-   METHOD Value( uValue )
-   METHOD NotEmpty()
+   
    METHOD Empty()
+   METHOD NotEmpty()      
    METHOD Str()
+   METHOD ValType()      
+   METHOD Value( uValue )
 
 ENDCLASS
 
-/* METHOD: Value() Devuelve el valor de uValue, este m√©todo se utiliza en combinaci√≥n con los Value del resto de datos Scalar
 
-   Par√°metros: 
-      uValue - Valor a Devolver
+/* METHOD: Empty() Devuelve siempre true, ya que un dato nil siempre estarÌa vacÌo.
 
    Devuelve:
-      el tipo de valor de uValue
-*/
-METHOD Value ( uValue ) CLASS Nil
-Return ( uValue )
-
-/* METHOD: NotEmpty() Devuelve siempre false, ya que un dato Nil no contiene nada
-
-   Devuelve:
-      L√≥gico
-*/
-METHOD NotEmpty() CLASS Nil
-Return ( .F. )
-
-
-/* METHOD: Empty() Devuelve siempre true, ya que un dato nil siempre estar√° vac√≠o.
-
-   Devuelve:
-      L√≥gico
+      Logical
 */
 METHOD Empty() CLASS Nil
 Return ( .T. )
 
+
+/* METHOD: NotEmpty() Devuelve siempre false, ya que un dato Nil no contiene nada
+
+   Devuelve:
+      Logical
+*/
+METHOD NotEmpty() CLASS Nil
+Return ( .F. )
 
 
 /* METHOD: Str()
@@ -50,3 +40,25 @@ Return ( .T. )
 */
 METHOD Str() CLASS NIL
 Return ( 'Nil' )
+
+
+/* METHOD: ValType()
+    Devuelve el tipo del dato
+    
+    Devuelve:
+        String
+*/
+METHOD ValType() CLASS NIL
+Return ( 'U' )
+
+
+/* METHOD: Value() Devuelve el valor de uValue, este mÈtodo se utiliza en combinaciÛn con los Value del resto de datos Scalar
+
+   Par·metros: 
+      uValue - Valor a Devolver
+
+   Devuelve:
+      el tipo de valor de uValue
+*/
+METHOD Value ( uValue ) CLASS Nil
+Return ( uValue )

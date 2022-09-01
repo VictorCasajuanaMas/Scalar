@@ -5,25 +5,41 @@ CLASS Test_Logical FROM TestCase
 
     EXPORTED: 
         DATA aCategories INIT { TEST_CORE }
-
-        METHOD Test_Str( )
-        METHOD Test_StrSql( )
-        METHOD Test_Value( )
-        METHOD Test_NotEmpty()
+        
         METHOD Test_Empty()
+        METHOD Test_NotEmpty()
+        METHOD Test_Str()
+        METHOD Test_StrSql()
+        METHOD Test_ValType()
+        METHOD Test_Value()
 
 END CLASS
 
 
+METHOD Test_Empty() CLASS Test_Logical
+
+    ::Assert():Equals( .F., .T.:Empty(), "Test Logical: Empty()" )
+    ::Assert():Equals( .F., .F.:Empty(), "Test Logical: Empty()" )
+
+Return ( Nil )
+
+
+METHOD Test_NotEmpty() CLASS Test_Logical
+
+    ::Assert():Equals( .T., .T.:NotEmpty(), "Test Logical: NotEmpty()" )
+    ::Assert():Equals( .T., .F.:NotEmpty(), "Test Logical: NotEmpty()" )
+
+Return ( Nil )
+
 
 METHOD Test_Str() CLASS Test_Logical
 
-    ::Assert():Equals( 'si' , .T.:Str('si','no') )
-    ::Assert():Equals( 'no' , .F.:Str('si','no') )
-    ::Assert():Equals( '.T.' , .T.:Str() )
-    ::Assert():Equals( '.F.' , .F.:Str() )
-    ::Assert():Equals( '.T.' , .T.:Str(,'no') )
-    ::Assert():Equals( '.F.' , .F.:Str('si',) )
+    ::Assert():Equals( 'si' , .T.:Str('si','no'),'Test Logical: Str()' )
+    ::Assert():Equals( 'no' , .F.:Str('si','no'),'Test Logical: Str()' )
+    ::Assert():Equals( '.T.' , .T.:Str(),'Test Logical: Str()' )
+    ::Assert():Equals( '.F.' , .F.:Str(),'Test Logical: Str()' )
+    ::Assert():Equals( '.T.' , .T.:Str(,'no'),'Test Logical: Str()' )
+    ::Assert():Equals( '.F.' , .F.:Str('si',),'Test Logical: Str()' )
 
 Return ( Nil )
 
@@ -36,26 +52,17 @@ METHOD Test_StrSql() CLASS Test_Logical
 Return ( Nil )
 
 
+METHOD Test_ValType() CLASS Test_Logical
+
+    ::Assert():Equals( 'L', .T.:ValType(), 'Test Logical: ValType()' )
+    
+Return ( Nil )
+
 
 METHOD Test_Value() CLASS Test_Logical
 
-    ::Assert():Equals( .T., .T.:Value() )
-    ::Assert():Equals( .T., Nil:Value(.T.) )
-    ::Assert():Equals( .F., Nil:Value(.F.) )
-
-Return ( Nil )
-
-METHOD Test_NotEmpty() CLASS Test_Logical
-
-    ::Assert():Equals( .T., .T.:NotEmpty(), "Test NotEmpty()" )
-    ::Assert():Equals( .T., .F.:NotEmpty(), "Test NotEmpty()" )
-
-Return ( Nil )
-
-
-METHOD Test_Empty() CLASS Test_Logical
-
-    ::Assert():Equals( .F., .T.:Empty(), "Test Empty()" )
-    ::Assert():Equals( .F., .F.:Empty(), "Test Empty()" )
+    ::Assert():Equals( .T., .T.:Value(), 'Test Logical: Value()' )
+    ::Assert():Equals( .T., Nil:Value(.T.), 'Test Logical: Value()' )
+    ::Assert():Equals( .F., Nil:Value(.F.), 'Test Logical: Value()' )
 
 Return ( Nil )

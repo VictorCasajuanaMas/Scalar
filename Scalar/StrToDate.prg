@@ -10,46 +10,44 @@ CREATE CLASS StrToDate
 
 		DATA dDate AS DATE INIT Date()
 
-        METHOD cLetToDate(cLet)  	// Letra a Fecha
-		METHOD cSimToDate(cDate) 	// Fecha con un símbolo a Fecha
-		METHOD cDMASepToDate(cDate)	// Fecha con Separadores a Fecha
-		METHOD cMDASepToDate(cDate)	// Fecha con Separadores a Fecha
-		METHOD cAMDSepToDate(cDate)	// Fecha con Separadores a Fecha
-		METHOD cSemToDate(cDate) 	// Dia de la semana a Fecha
-		METHOD cDMAToDate(cDate) 	// Numerica en formato DMA a Fecha
-		METHOD cMDAToDate(cDate) 	// Numerica en formato MDA a Fecha
-		METHOD cAMDToDate(cDate) 	// Numerica en formato AMD a Fecha
+        METHOD cLetToDate(cLet)  				// Letra a Fecha
+		METHOD cSimToDate(cDate) 				// Fecha con un sÝmbolo a Fecha
+		METHOD cSepToDate(cDate)				// Fecha con Separadores a Fecha
+		METHOD cSemToDate(cDate, lFirstSunDay) 	// Dia de la semana a Fecha
+		METHOD cDMAToDate(cDate) 				// Numerica en formato DMA a Fecha
+		METHOD cMDAToDate(cDate) 				// Numerica en formato MDA a Fecha
+		METHOD cAMDToDate(cDate) 				// Numerica en formato AMD a Fecha
 
 END CLASS
 
 /* METHOD: Convert( cDate, cFormat, xReturn )
     Devuelve una fecha a partir de una Cadena interpretable como fecha.
 
-	Parámetros:
-	cDate - Formato según:
+	Parßmetros:
+	cDate - Formato seg·n:
             h -- Fecha de actual
-            m -- Fecha de mañana
+            m -- Fecha de ma±ana
             a -- Fecha de ayer
 			
-			+d -- Dentro de d días
-			-d -- Hace d días
-			>  -- Último día del año
-			<  -- Primer días del año
+			+d -- Dentro de d dÝas
+			-d -- Hace d dÝas
+			>  -- ?ltimo dÝa del a±o
+			<  -- Primer dÝas del a±o
 			
-			d, dd - Día d del mes y año actual
-			dmm, ddmm - Día d y mes mm del año actual
-			dmmaa, ddmmaa - Día d y mes mm del año aa
-			dmmaaaa, ddmmaaaa - Día d y mes mm del año aaaa
-			d/m, d/mm, dd/m, dd/mm - Día d y mes m del año actual
-			d/m/a - Día d y mes mm del año aa
-			sem, semana - Fecha del próximo dia de la semana.
+			d, dd - DÝa d del mes y a±o actual
+			dmm, ddmm - DÝa d y mes mm del a±o actual
+			dmmaa, ddmmaa - DÝa d y mes mm del a±o aa
+			dmmaaaa, ddmmaaaa - DÝa d y mes mm del a±o aaaa
+			d/m, d/mm, dd/m, dd/mm - DÝa d y mes m del a±o actual
+			d/m/a - DÝa d y mes mm del a±o aa
+			sem, semana - Fecha del pr¾ximo dia de la semana.
 
-    xReturn - Cadena a devolver si no se logra la conversión, ::dDate por defecto
+    xReturn - Cadena a devolver si no se logra la conversi¾n, ::dDate por defecto
 	cFormat - Formato de entrada AMD MDA AMD
 
 
 Devuelve:
-    Cadena formateada como una fecha
+    Fecha
 */
 
 METHOD Convert(cDate, cFormat, xReturn) CLASS StrToDate
@@ -58,34 +56,23 @@ METHOD Convert(cDate, cFormat, xReturn) CLASS StrToDate
 	xReturn := iif(empty(xReturn), ::dDate, xReturn)
 	hb_default(@cFormat, "DMA" )
 	
-	cDate := Lower( AllTrim (cDate) )
+	cDate := cDate:Alltrim():Lower()
 	
 	Do Case
-		Case Len(cDate) == 1 .and.  cDate $ "htaymw"
+		Case cDate:Len() == 1 .and.  cDate $ "htaymw"
+			
 			dRet := ::cLetToDate( cDate )
 			
-		Case Left( cDate,1) $ "+-><"
+		Case cDate:Left(1) $ "+-><"
 			dRet := ::cSimToDate( cDate )
 			
-		Case At("-", cDate) > 0 .or. At(" ", cDate) > 0 .or. At(".", cDate) > 0 .or. At("/", cDate) > 0
-			switch cFormat
-				case "DMA"
-					dRet := ::cDMASepToDate( cDate )
-					exit
-										
-				case "MDA"
-					dRet := ::cMDASepToDate( cDate )
-					exit
+		Case cDate:At(" ") > 0 .or. cDate:At("/") > 0 .or. cDate:At("-") > 0 .or. cDate:At(".") > 0
+			dRet := ::cSepToDate( cDate, cFormat )
 					
-				case "AMD"
-					dRet := ::cAMDSepToDate( cDate )
-					exit
-			endswitch
-		
-		Case Val( cDate ) == 0
+		Case cDate:Val() == 0
 			dRet := ::cSemToDate( cDate )
 			
-		Case Val( cDate ) > 0
+		Case cDate:Val() > 0
 			switch cFormat
 				case "DMA"
 					dRet := ::cDMAToDate( cDate )
@@ -111,98 +98,93 @@ METHOD Convert(cDate, cFormat, xReturn) CLASS StrToDate
 	
 Return dRet
 
-/* METHOD: SetDAte( dDAte )
+/* METHOD: SetDate( dDAte )
 	Asigna dDAte al data de la clase dDAte
 	
-	Parámetros:
+	Par?metros:
 		dDAte - fecha a asignar
 
 Devuelve:
 	Self
 */
-METHOD SetDAte( dDAte ) CLASS StrToDate
+METHOD SetDate( dDate ) CLASS StrToDate
 
 	If dDate != Nil .And.;
 	   HB_ISDATE( dDate )
 
 		::dDate := dDate
-
+		
 	Endif
+	
 
 Return ( Self )
 
 //------------------------------------------------------------------------------
 // Si se le pasa h, t, a, y, m, w devuelve una fecha correspondiente a hoy,
-// ayer o mañana. Cualquier otra cosa devuelve una fecha vacia
+// ayer o ma±ana. Cualquier otra cosa devuelve una fecha vacia
 // La fecha devuelta tendra el formato activo
 
 METHOD cLetToDate( cLet ) CLASS StrToDate
 	Local dRet
-
-    if ValType( cLet ) == 'C'
-        		
-		switch cLet
-			// Hoy
-			case 'h'
-			case 't'
-			    dRet := ::dDate
-				exit
-					
-			// Ayer
-			case 'a'
-            case 'y'
-				dRet := ::dDate - 1
-				exit
-					
-            // Mañana
-			case 'm'
-            case 'w'
-				dRet := ::dDate + 1
-				exit
+      		
+	switch cLet
+		// Hoy
+		case 'h'
+		case 't'
+			dRet := ::dDate
+			exit
 				
-			otherwise
-				dRet := CToD( "" )
+		// Ayer
+		case 'a'
+           case 'y'
+			dRet := ::dDate:Yesterday()
+			exit
+				
+           // Ma±ana
+		case 'm'
+           case 'w'
+			dRet := ::dDate:Tomorrow()
+			exit
 			
-		endswitch
+		otherwise
+			dRet := CToD( "" )
+		
+	endswitch
 
-    endif
+
 	
 return dRet
 
 
 //------------------------------------------------------------------------------
-// Si se pasa + ó -  seguido de un número, suma o resta a la fecha actual
-// Si se pasa > ó < devuelve el último día del año actual o el primero
+// Si se pasa + ¾ -  seguido de un nÀmero, suma o resta a la fecha actual
+// Si se pasa > ¾ < devuelve el Àltimo dÝa del a±o actual o el primero
 // La fecha devuelta tendra el formato activo
 
 METHOD cSimToDate (cDate) CLASS StrToDate
 	Local cRet := "" , cSymbol, cParam
-	
-	if ValType( cDate ) == 'C'
 
-		cSymbol := Left(cDate,1)
-		cParam  := SubStr(cDate,2)
+	cSymbol := cDate:Left(1)
+	cParam  := cDate:SubStr(2)	
 
-		switch cSymbol
+	switch cSymbol	
+		case '+'
+			cRet := ::dDate:AddDay( iif(cParam:Val() > 0, cParam:Val(), 1)  ):Str()
+			exit
 
-			case '+'
-				cRet := DToC(::dDate + (iif(Val(cParam) > 0, Val(cParam), 1)) )
-				exit
-						
-			case '-'
-				cRet := DToC(::dDate - (iif(Val(cParam) > 0, Val(cParam), 1)) )
-				exit
-						
-			case '>'
-				cRet := '31-12-' + IIF (Val(cParam)> 0 .and. Val(cParam) < 10000, SubStr(cDate,2), Str(Year(::dDate)))
-				exit
-						
-			case '<'
-				cRet := '01-01-' + iif(Val(SubStr(cDate,2)) > 0 .and. Val(SubStr(cDate,2)) < 10000, SubStr(cDate,2), Str(Year(::dDate)))
-				exit
-			
-		endswitch
-	endif
+		case '-'
+			cRet := ::dDate:SubDay( iif( cParam:Val() > 0, cParam:Val(), 1) ):Str()
+			exit
+
+		case '>'
+			cRet := '31-12-' + iif (cParam:Val() > 0 .and. cParam:Val() < 10000, cParam, ::dDate:Year():Str() )
+			exit
+
+		case '<'
+			cRet := '01-01-' + iif( cParam:Val() > 0 .and. cParam:Val() < 10000, cParam, ::dDate:Year():Str() )
+			exit
+		
+	endswitch	
 return CToD( cRet )
 
 
@@ -210,88 +192,72 @@ return CToD( cRet )
 // Devuelve la fecha pasado con separadores
 // La fecha devuelta tendra el formato activo
 
-METHOD  cDMASepToDate (cDate) CLASS StrToDate
+METHOD  cSepToDate (cDate, cFormat) CLASS StrToDate
 	Local aParts, cRet, cFormOld
-	
-	cFormOld := Set( _SET_DATEFORMAT, "dd-mm-yyyy" )
-	
-	cDate := cStrTran(cDate," ./","---")
-	aParts := HB_ATokens( DToC( ::dDate ), "-" )
-	
-	AEval( HB_ATokens( cDate, "-" ), {| token, n | aParts[n] := IIF(Val(token)>0, token, aParts[n])  } )	
-	
-	cRet := aParts[ 1 ] + "-" + aParts[ 2 ] + "-" + aParts[ 3 ]
-	Set( _SET_DATEFORMAT, cFormOld )
-	
-return (CToD(cRet))
 
-METHOD  cMDASepToDate (cDate) CLASS StrToDate
-	Local aParts, cRet, cFormOld
+	cDate := cDate:strReplace(" ./", "---")
 	
-	cFormOld := Set( _SET_DATEFORMAT, "mm-dd-yyyy" )
-	
-	cDate := cStrTran(cDate," ./","---")
-	aParts := HB_ATokens( DToC( ::dDate ), "-" )
-	
-	AEval( HB_ATokens( cDate, "-" ), {| token, n | aParts[n] := IIF(Val(token)>0, token, aParts[n])  } )	
-	
-	cRet := aParts[ 2 ] + "-" + aParts[ 1 ] + "-" + aParts[ 3 ]
-	Set( _SET_DATEFORMAT, cFormOld )
-	
-return (CToD(cRet))
+	switch cFormat
+		
+		case "MDA"
+			cFormOld := Set( _SET_DATEFORMAT, "mm-dd-yyyy" )
+			exit
 
-METHOD  cAMDSepToDate (cDate) CLASS StrToDate
-	Local aParts, cRet, cFormOld
+		case "AMD"
+			cFormOld := Set( _SET_DATEFORMAT, "yyyy-mm-dd" )
+			exit
+
+		otherwise
+			cFormOld := Set( _SET_DATEFORMAT, "dd-mm-yyyy" )
+	endswitch
+
+	aParts := HB_ATokens( ::dDate:Str(), "-" )
 	
-	cFormOld := Set( _SET_DATEFORMAT, "yyyy-mm-dd" )
+	AEval( HB_ATokens( cDate, "-" ), {| cToken, n | aParts[n] := iif( cToken:Val() > 0, cToken, aParts[n] ) } )
 	
-	cDate := cStrTran(cDate," ./","---")
-	aParts := HB_ATokens( DToC( ::dDate ), "-" )
-	
-	AEval( HB_ATokens( cDate, "-" ), {| token, n | aParts[n] := IIF(Val(token)>0, token, aParts[n])  } )	
-	
-	cRet := aParts[ 3 ] + "-" + aParts[ 2 ] + "-" + aParts[ 1 ]
+	switch cFormat
+		
+		case "MDA"
+			cRet := aParts[ 2 ] + "-" + aParts[ 1 ] + "-" + aParts[ 3 ]
+			exit
+
+		case "AMD"
+			cRet := aParts[ 3 ] + "-" + aParts[ 2 ] + "-" + aParts[ 1 ]
+			exit
+
+		otherwise
+			cRet := aParts[ 1 ] + "-" + aParts[ 2 ] + "-" + aParts[ 3 ]
+
+	endswitch
+
 	Set( _SET_DATEFORMAT, cFormOld )
 	
-return (CToD(cRet))
+return CToD( cRet )
 
 
 //------------------------------------------------------------------------------
 // Formato día de la semana, internacional
 
-METHOD cSemToDate( cDiaSemana ) CLASS StrToDate
+METHOD cSemToDate( cDayOfWeek, lFirstSunDay) CLASS StrToDate
 
-    local dRet, aDay, nDayFound, n
-	local nCountDays := 0
+    local dRet, nDayFound
 
-    if ValType( cDiaSemana ) == 'C'
-        aDay := Array( 7 )
-        cDiaSemana := lower( cDiaSemana )
+	HB_Default(@lFirstSunDay, .F.)
+    
+    nDayFound := cDayOfWeek:DayOfWeek( lFirstSunDay )
 
-		// Cargamos los días de la semana en el idioma actual en minúsculas
-		for n := 1 to 7
-            aDay[ n ] := lower( HB_TRANSLATE(hb_CDay( n ),"ES850","ESWIN") )
-		next
-		
-		// Buscamos en el Array de semanas el día y cuantos coinciden
-		for n:= 1 to 7
-			if Left(aDay[ n ],Len(cDiaSemana)) == cDiaSemana    // Búsqueda blanda
-				nCountDays++
-				nDayFound := n
-			endif
-		next
-		
-		// Si hay coincidencia en mas de un día no es valida la entrada
-		if nCountDays == 1
-			if  nDayFound - DoW( ::dDate )  > 0 // En esta semana o la siguiente
-				return ::dDate + nDayFound - Dow( ::dDate )
-			else
-				return ::dDate + 7 + nDayFound - Dow( ::dDate )
-			endif
+    If nDayFound > 0
+		if  nDayFound <= ::dDate:DoW( lFirstSunDay )  // En esta semana o la siguiente
+			dRet := ::dDate:AddWeek():FirstDayOfWeek():AddDay(nDayFound - 1)
+		else
+			dRet := ::dDate:FirstDayOfWeek():AddDay(nDayFound - 1)
 		endif
+        
+    else
+        dRet :=  CtoD('')
     endif
-
-return CToD( "" )
+	
+return dRet
 
 
 //------------------------------------------------------------------------------
@@ -301,28 +267,28 @@ METHOD cDMAToDate( cDate ) CLASS StrToDate
 
     local cFormOld, aParts, dRet
 
-    if ValType( cDate ) == 'C' .and. Val( cDate ) > 0
+    if cDate:Val() > 0
 
 		cFormOld := Set( _SET_DATEFORMAT, "dd-mm-yyyy" )
 
-        aParts := HB_ATokens( DToC( ::dDate ), "-" )
+        aParts := HB_ATokens( ::dDate:Str(), "-" )
 
-        if Mod( Len( cDate ), 2 ) != 0
+        if cDate:Len():Mod(2) != 0
             cDate := "0" + cDate
         endif
 
-        switch Len( cDate )
+        switch cDate:Len()
 			case 2
 				aParts[ 1 ] := cDate
 				exit
 			case 4
-				aParts[ 1 ] := SubStr( cDate, 1, 2 )
-				aParts[ 2 ] := SubStr( cDate, 3, 2 )
+				aParts[ 1 ] := cDate:SubStr( 1, 2 )
+				aParts[ 2 ] := cDate:SubStr( 3, 2 )
 				exit
 			otherwise
-				aParts[ 1 ] := SubStr( cDate, 1, 2 )
-				aParts[ 2 ] := SubStr( cDate, 3, 2 )
-				aParts[ 3 ] := SubStr( cDate, 5 )
+				aParts[ 1 ] := cDate:SubStr( 1, 2 )
+				aParts[ 2 ] := cDate:SubStr( 3, 2 )
+				aParts[ 3 ] := cDate:SubStr( 5 )
         endswitch
 
         dRet := CToD( aParts[ 1 ] + "-" + aParts[ 2 ] + "-" + aParts[ 3 ] )
@@ -340,16 +306,16 @@ METHOD cMDAToDate( cDate ) CLASS StrToDate
 
     local cFormOld, aParts, dRet
 
-    if ValType( cDate ) == 'C' .and. Val( cDate ) > 0
+    if  Val( cDate ) > 0
         cFormOld := Set( _SET_DATEFORMAT, "dd-mm-yyyy" )
 
         aParts := HB_ATokens( DToC( ::dDate ), "-" )
 
-        if Mod( Len( cDate ), 2 ) != 0
+        if cDate:Len():Mod(2) != 0
             cDate := "0" + cDate
         endif
 
-        switch Len( cDate )
+        switch cDate:Len()
 			case 2
 				aParts[ 1 ] := cDate
 				exit
@@ -377,30 +343,31 @@ return dRet
  METHOD cAMDToDate( cDate ) CLASS StrToDate
     local cFormOld, aParts, dRet
 
-    if ValType( cDate ) == 'C' .and. Val( cDate ) > 0
+    if Val( cDate ) > 0
         cFormOld := Set( _SET_DATEFORMAT, "dd-mm-yyyy" )
 
         aParts := HB_ATokens( DToC( ::dDate ), "-" )
 
         cDate := AllTrim( cDate )
 
-        if Mod( Len( cDate ), 2 ) != 0
+        if cDate:Len():Mod(2) != 0
             cDate := "0" + cDate
         endif
 
-        switch Len( cDate )
+        switch cDate:Len()
 			case 2
 				aParts[ 1 ] := cDate
 				exit
+
 			case 4
-				aParts[ 1 ] := "01"
-				aParts[ 2 ] := SubStr( cDate, 3, 2 )
-				aParts[ 3 ] := SubStr( cDate, 1, 2 )
+				aParts[ 2 ] := cDate:SubStr( 3, 2 )
+				aParts[ 3 ] := cDate:SubStr( 1, 2 )
 				exit
+
 			otherwise
 				aParts[ 1 ] := SubStr( cDate, -2, 2 )
 				aParts[ 2 ] := SubStr( cDate, -4, 2 )
-				aParts[ 3 ] := SubStr( cDate, 1, Len( cDate ) -4 )
+				aParts[ 3 ] := SubStr( cDate, 1, cDate:len() - 4 )
         endswitch
 
         dRet := CToD( aParts[ 1 ] + "-" + aParts[ 2 ] + "-" + aParts[ 3 ] )
@@ -411,39 +378,3 @@ return dRet
     endif
 
 return dRet
-
-Static Function cStrTran( cOrigin, cPattern, cToConvert )
-
-    Local cResult AS CHARACTER := ''
-    Local cChar   AS CHARACTER := ''
-
-    If Len( cPattern ) != Len( cToConvert )
-
-        Return ( cOrigin )
-
-    Endif
-
-    for each cChar in cOrigin
-
-        cResult += Convert( cChar, cPattern, cToConvert )
-        
-    next
-
-Return ( cResult )
-
-Static Function Convert( cChar, cPattern, cToConvert )
-
-    Local cCharConvert AS CHARACTER := Upper( cChar )
-    Local cCharPattern AS CHARACTER := ''
-
-    for each cCharPattern in cPattern
-        
-        If cCharPattern == cCHar 
-
-            cCharConvert := Substr(cToConvert, cCharPattern:__enumIndex, 1)
-
-        Endif
-
-    next
-
-Return ( cCharConvert )
